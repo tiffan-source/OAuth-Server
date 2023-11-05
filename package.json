@@ -13,7 +13,9 @@
     "test:staged": "npm run test -- --findRelatedTests",
     "test:ci": "npm run test -- --coverage",
     "lint": "eslint --ignore-path .gitignore --ext .ts --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "up": "concurrently --kill-others \"npm run build:watch\" \"docker-compose up\"",
+    "down": "docker-compose down"
   },
   "author": "",
   "license": "ISC",
@@ -52,5 +54,11 @@
       "npm run lint",
       "npm run test:staged"
     ]
+  },
+  "dependencies": {
+    "module-alias": "^2.2.3"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }

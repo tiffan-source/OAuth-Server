@@ -1,0 +1,31 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysqlDB
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: notfound404
+      MYSQL_DATABASE: testAPI
+      MYSQL_USER: tiffane
+      MYSQL_PASSWORD: notfound404
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/db:/data/db
+
+  api:
+    image: node:20
+    container_name: api
+    working_dir: /app
+    restart: always
+    ports:
+      - 3000:3000
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    volumes:
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./dist:/app/dist
+    command: bash -c "npm install && npm run dev"
