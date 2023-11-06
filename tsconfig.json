@@ -37,6 +37,7 @@
         "@infrastructure/*": ["infrastructure/*"],
         "@web/*": ["web/*"],
         "@tests/*": ["../tests/*"],
+        "@data/*": ["data/*"]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "rootDirs": [
         "./src",

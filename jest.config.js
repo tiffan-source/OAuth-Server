@@ -100,6 +100,7 @@ const config = {
     "@infrastructure/(.*)": "<rootDir>/src/infrastructure/$1",
     "@web/(.*)": "<rootDir>/src/web/$1",
     "@test/(.*)": "<rootDir>/test/$1",
+    "@data/(.*)": "<rootDir>/src/data/$1",
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -47,7 +47,8 @@
     "@domain": "dist/domain",
     "@infrastructure": "dist/infrastructure",
     "@web": "dist/web",
-    "@application": "dist/application"
+    "@application": "dist/application",
+    "@data": "dist/data"
   },
   "lint-staged": {
     "*.ts": [
