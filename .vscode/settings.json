@@ -1,0 +1,8 @@
+{
+    "explorer.compactFolders": true,
+    "explorer.decorations.colors": true,
+    "explorer.enableDragAndDrop": false,
+    "explorer.expandSingleFolderWorkspaces": true,
+    "explorer.fileNesting.enabled": true,
+    "explorer.autoReveal": false
+}

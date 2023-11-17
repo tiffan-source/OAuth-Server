@@ -25,7 +25,7 @@ const config = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     "<rootDir>/src/**/*.ts",
-    "!<rootDir>/src/web/**",
+    "!<rootDir>/src/main/**",
   ],
 
   // The directory where Jest should output its coverage files
@@ -98,9 +98,11 @@ const config = {
     "@domain/(.*)": "<rootDir>/src/domain/$1",
     "@application/(.*)": "<rootDir>/src/application/$1",
     "@infrastructure/(.*)": "<rootDir>/src/infrastructure/$1",
-    "@web/(.*)": "<rootDir>/src/web/$1",
-    "@test/(.*)": "<rootDir>/test/$1",
+    "@presentation/(.*)": "<rootDir>/src/presentation/$1",
+    "@tests/(.*)": "<rootDir>/tests/$1",
     "@data/(.*)": "<rootDir>/src/data/$1",
+    "@main/(.*)": "<rootDir>/src/main/$1",
+    "@symboles/(.*)": "<rootDir>/src/symboles/$1",
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

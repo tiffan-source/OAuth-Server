@@ -1,17 +1,15 @@
 import { type User } from '@domain/user/entity/user'
 
-export class UserResultDto {
-  constructor (
-    private readonly id: string,
-    private readonly name: string,
-    private readonly email: string
-  ) { }
+export interface UserResultDto {
+  readonly id: string
+  readonly name: string
+  readonly email: string
+}
 
-  public static fromEntity (user: User): UserResultDto {
-    return new UserResultDto(
-      user.getId(),
-      user.getName(),
-      user.getEmail()
-    )
+export const fromEntityToUserResultDto = (user: User): UserResultDto => {
+  return {
+    id: user.getId(),
+    name: user.getName(),
+    email: user.getEmail()
   }
 }

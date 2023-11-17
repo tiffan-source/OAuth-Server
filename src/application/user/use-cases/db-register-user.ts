@@ -1,22 +1,23 @@
-import { type RegisterUser } from '../protocols/register-user'
+import { type RegisterUser } from '@application/user/protocols/register-user'
 import { type CreateUserRepository } from '@data/protocols/user/create-user.repository'
-import { UserResultDto, type UserRegisterDto } from '../dtos'
+import { type UserResultDto, type UserRegisterDto, fromEntityToUserResultDto } from '../dtos'
+import { inject, injectable } from 'inversify'
+import 'reflect-metadata'
+import { TYPES } from '@symboles/types'
+@injectable()
 
 export class DbRegisterUser implements RegisterUser {
-  constructor (private readonly createUserRepository: CreateUserRepository) {}
+  private readonly createUserRepository: CreateUserRepository
+
+  constructor (
+  @inject(TYPES.CreateUserRepository) createUserRepository: CreateUserRepository
+  ) {
+    this.createUserRepository = createUserRepository
+  }
 
   async register (user: UserRegisterDto): Promise<UserResultDto> {
-    const userCreated = await this.createUserRepository.create(
-      {
-        name: user.getName(),
-        email: user.getEmail(),
-        password: user.getPassword()
-      }
-    )
-    return new UserResultDto(
-      userCreated.getId(),
-      userCreated.getName(),
-      userCreated.getEmail()
-    )
+    const userCreated = await this.createUserRepository.create(user)
+
+    return fromEntityToUserResultDto(userCreated)
   }
 }
