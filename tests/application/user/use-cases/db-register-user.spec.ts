@@ -1,5 +1,6 @@
-import { CreateUserMock } from '@tests/application/mocks/user/create-user.mock'
-import { DbRegisterUser } from '@application/user/use-cases/db-register-user'
+import { CreateUserMock } from '@tests/application/mocks/user/create-user.mock.js'
+import { DbRegisterUser } from '@application/user/use-cases/db-register-user.js'
+import { jest } from '@jest/globals'
 
 describe('DbRegisterUser', () => {
   it('should call create of CreateUserRepository', async () => {

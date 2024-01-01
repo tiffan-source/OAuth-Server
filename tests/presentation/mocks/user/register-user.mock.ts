@@ -1,5 +1,6 @@
-import { type UserRegisterDto, type UserResultDto } from '@application/user/dtos'
-import { type RegisterUser } from '@application/user/protocols/register-user'
+import { type UserResultDto } from '@application/user/dtos/user-result.dto'
+import { type UserRegisterDto } from '@application/user/dtos/user-register.dto'
+import { type RegisterUser } from '@application/user/protocols/register-user.js'
 import { faker } from '@faker-js/faker'
 
 export class RegisterUserMock implements RegisterUser {

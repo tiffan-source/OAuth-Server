@@ -1,32 +1,39 @@
-import { RegisterUser } from '@application/user/protocols/register-user'
+import { RegisterUser } from '@application/user/protocols/register-user.js'
 import 'reflect-metadata'
-import { type Controller } from 'presentation/protocols'
-import { type HttpResponse } from '@presentation/protocols/controllers/response/httpResponse'
-import { created, serverError } from '@presentation/helpers'
-import { type HttpUserRegister } from '@presentation/protocols/controllers/request/user/httpUserRegister'
+import { type Controller } from '@presentation/protocols/controllers/controller.js'
+import { type HttpResponse } from '@presentation/protocols/controllers/response/httpResponse.js'
+import { badRequest, created, serverError } from '@presentation/helpers/http.helpers.js'
+import { type HttpUserRegister } from '@presentation/protocols/controllers/request/user/httpUserRegister.js'
 import { injectable, inject } from 'inversify'
-import { TYPES } from '@symboles/types'
+import { TYPES } from '@symboles/types.js'
+import { IValidation } from '@presentation/protocols/validations/validation.js'
 
 @injectable()
 export class CreateUserController implements Controller {
   private readonly registerUser: RegisterUser
+  private readonly validation: IValidation
 
   constructor (
-  @inject(TYPES.RegisterUser) registerUser: RegisterUser
+  @inject(TYPES.RegisterUser) registerUser: RegisterUser,
+    validation: IValidation
   ) {
     this.registerUser = registerUser
+    this.validation = validation
   }
 
   async handle (request: HttpUserRegister): Promise<HttpResponse> {
-    // I can make validation here, but I will do it in another time
     try {
+      this.validation.validate(request)
+
+      if (!this.validation.isValid()) {
+        const error = new Error(this.validation.getErrors()[0].toString())
+        return badRequest(error)
+      }
+
       const userResult = await this.registerUser.register(request.body)
 
       return created(userResult)
     } catch (error) {
-      console.log(error)
-
-      // Must be change later.... why error is unknown?
       return serverError(new Error())
     }
   }

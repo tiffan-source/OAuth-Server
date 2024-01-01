@@ -1,14 +1,12 @@
-import { TYPES } from '@symboles/types'
-import { type DatabaseConnection } from '@data/protocols/db/database-connection'
+import { TYPES } from '@symboles/types.js'
 import { ContainerModule, Container as InversifyContainer, type interfaces } from 'inversify'
 import 'dotenv/config'
-import env from './env'
-import { MysqlDatabaseConnection } from '@infrastructure/db/mysql/MysqlDatabaseConnection'
-import { CreateUserController } from '@presentation/controllers/user/create-user.controller'
-import { type CreateUserRepository } from '@data/protocols/user/create-user.repository'
-import { CreateUserMysql } from '@infrastructure/db/mysql/user/create-user.mysql'
-import { type RegisterUser } from '@application/user/protocols/register-user'
-import { DbRegisterUser } from '@application/user/use-cases/db-register-user'
+import { CreateUserController } from '@presentation/controllers/user/create-user.controller.js'
+import { type RegisterUser } from '@application/user/protocols/register-user.js'
+import { DbRegisterUser } from '@application/user/use-cases/db-register-user.js'
+import { CreateUserVineValidation } from '@infrastructure/validations/create-user.vine.validation.js'
+import { type Validation } from '@presentation/protocols/validations/validation.js'
+import 'reflect-metadata'
 
 export class Container {
   private readonly container: InversifyContainer = new InversifyContainer()
@@ -22,6 +20,7 @@ export class Container {
     this.container.load(this.getControllerModule())
     this.container.load(this.getRepositoryModule())
     this.container.load(this.getUseCaseModule())
+    this.container.load(this.getValidationModule())
   }
 
   public functionDependencies (func: (...args: any[]) => any, dependencies: any[]): (...args: any[]) => any {
@@ -33,17 +32,13 @@ export class Container {
 
   private getGeneralModule (): ContainerModule {
     return new ContainerModule((bind: interfaces.Bind) => {
-      const connection = new MysqlDatabaseConnection(
-        env.mysql.host,
-        env.mysql.port as number,
-        env.mysql.user,
-        env.mysql.password,
-        env.mysql.database
-      )
 
-      bind<MysqlDatabaseConnection>(TYPES.MysqlDatabaseConnection).toConstantValue(connection)
+    })
+  }
 
-      bind<DatabaseConnection>(TYPES.DatabaseConnection).toConstantValue(connection)
+  private getValidationModule (): ContainerModule {
+    return new ContainerModule((bind: interfaces.Bind) => {
+      bind<Validation>(TYPES.Validation).to(CreateUserVineValidation)
     })
   }
 
@@ -55,7 +50,6 @@ export class Container {
 
   private getRepositoryModule (): ContainerModule {
     return new ContainerModule((bind: interfaces.Bind) => {
-      bind<CreateUserRepository>(TYPES.CreateUserRepository).to(CreateUserMysql)
     })
   }
 

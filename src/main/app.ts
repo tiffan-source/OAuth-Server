@@ -1,8 +1,9 @@
 import express, { type Application, Router } from 'express'
-import { bodyParser, contentType, corsMiddleware } from '@main/middlewares'
-import { type Container } from './configs/inversify.config'
-import { setupRouter } from './routes'
-
+import { type Container } from '@main/configs/inversify.config.js'
+import { setupRouter } from '@main/routes/index.js'
+import { bodyParser } from '@main/middlewares/body-parser.js'
+import { contentType } from '@main/middlewares/content-type.js'
+import { corsMiddleware } from '@main/middlewares/cors.js'
 export class App {
   private readonly app: Application
   private readonly container: Container

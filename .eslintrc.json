@@ -10,5 +10,9 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-    }
+    },
+    "ignorePatterns": [
+        "./tsconfig.json",
+        "./jest.config.ts"
+    ]
 }

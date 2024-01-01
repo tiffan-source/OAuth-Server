@@ -1,4 +1,4 @@
-import { type User } from '@domain/user/entity/user'
+import { type User } from '@domain/user/entity/user.js'
 
 export interface UserResultDto {
   readonly id: string

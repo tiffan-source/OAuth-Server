@@ -5,5 +5,7 @@ export const TYPES = {
   Controller: Symbol.for('Controller'),
   Middleware: Symbol.for('Middleware'),
   CreateUserController: Symbol.for('CreateUserController'),
-  MysqlDatabaseConnection: Symbol.for('MysqlDatabaseConnection')
+  Validation: Symbol.for('Validation'),
+  EmailValidation: Symbol.for('EmailValidation'),
+  RequiredValidation: Symbol.for('RequiredValidation')
 }

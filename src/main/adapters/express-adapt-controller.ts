@@ -1,4 +1,4 @@
-import { type Controller } from '@presentation/protocols'
+import { type Controller } from '@presentation/protocols/controllers/controller.js'
 import { type Request, type Response } from 'express'
 
 export const adaptController = (controller: Controller) => {
