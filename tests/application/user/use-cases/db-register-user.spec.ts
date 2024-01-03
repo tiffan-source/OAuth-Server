@@ -18,6 +18,7 @@ describe('DbRegisterUser', () => {
     expect(verify).toHaveBeenCalled()
   })
 
+  //   The test below is not well written, because it is not testing the return of the method, but the implementation of the method.
   it('should return data of type UserResultDTO', async () => {
     const repository = new CreateUserMock()
     const registerUser = new DbRegisterUser(repository)

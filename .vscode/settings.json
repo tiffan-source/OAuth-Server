@@ -4,5 +4,6 @@
     "explorer.enableDragAndDrop": false,
     "explorer.expandSingleFolderWorkspaces": true,
     "explorer.fileNesting.enabled": true,
-    "explorer.autoReveal": false
+    "explorer.autoReveal": false,
+    "cmake.configureOnOpen": false
 }

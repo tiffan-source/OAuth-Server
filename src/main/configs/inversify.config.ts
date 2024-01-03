@@ -5,7 +5,7 @@ import { CreateUserController } from '@presentation/controllers/user/create-user
 import { type RegisterUser } from '@application/user/protocols/register-user.js'
 import { DbRegisterUser } from '@application/user/use-cases/db-register-user.js'
 import { CreateUserVineValidation } from '@infrastructure/validations/create-user.vine.validation.js'
-import { type Validation } from '@presentation/protocols/validations/validation.js'
+import { type IValidation } from '@presentation/protocols/validations/validation.js'
 import 'reflect-metadata'
 
 export class Container {
@@ -38,7 +38,7 @@ export class Container {
 
   private getValidationModule (): ContainerModule {
     return new ContainerModule((bind: interfaces.Bind) => {
-      bind<Validation>(TYPES.Validation).to(CreateUserVineValidation)
+      bind<IValidation>(TYPES.Validation).to(CreateUserVineValidation)
     })
   }
 

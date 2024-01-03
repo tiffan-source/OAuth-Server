@@ -6,8 +6,8 @@
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "build:watch": "npm run build -- --watch",
-    "start": "node --loader esm-module-alias/loader dist/main/index.js",
-    "dev": "nodemon --loader esm-module-alias/loader -L --watch './dist/**/*.js' ./dist/main/index.js",
+    "start": "node --loader esm-module-alias/loader dist/src/main/index.js",
+    "dev": "nodemon --loader esm-module-alias/loader -L --watch './dist/**/*.js' ./dist/src/main/index.js",
     "start:dev": "concurrently --kill-others \"npm run build:watch\" \"nodemon run dev\"",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest --passWithNoTests --detectOpenHandles --runInBand --no-cache",
     "test:staged": "npm run test -- --findRelatedTests",
@@ -26,8 +26,9 @@
     "@types/cors": "^2.8.16",
     "@types/iconv-lite": "^0.0.1",
     "@types/jest": "^29.5.8",
-    "@types/node": "^20.8.10",
+    "@types/node": "^20.10.6",
     "@types/supertest": "^2.0.15",
+    "@types/validator": "^13.11.7",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "concurrently": "^8.2.2",
     "cwd": "^0.10.0",
@@ -39,23 +40,26 @@
     "eslint-plugin-promise": "^6.1.1",
     "husky": "^8.0.0",
     "jest": "^29.7.0",
+    "jest-mock-extended": "^3.0.5",
     "jest-mysql": "^2.0.0",
     "lint-staged": "^15.0.2",
     "moq.ts": "^10.0.8",
     "nodemon": "^3.0.1",
+    "prisma": "^5.7.1",
     "rimraf": "^5.0.5",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "aliases": {
-    "@domain": "dist/domain",
-    "@infrastructure": "dist/infrastructure",
-    "@presentation": "dist/presentation",
-    "@application": "dist/application",
-    "@data": "dist/data",
-    "@main": "dist/main",
-    "@symboles": "dist/symboles"
+    "@domain": "dist/src/domain",
+    "@infrastructure": "dist/src/infrastructure",
+    "@presentation": "dist/src/presentation",
+    "@application": "dist/src/application",
+    "@data": "dist/src/data",
+    "@main": "dist/src/main",
+    "@symboles": "dist/src/symboles"
   },
   "lint-staged": {
     "*.ts": [
@@ -64,18 +68,22 @@
     ]
   },
   "dependencies": {
+    "@prisma/client": "^5.7.1",
     "@types/express": "^4.17.21",
     "@vinejs/vine": "^1.7.0",
     "cors": "^2.8.5",
     "esm-module-alias": "^2.1.0",
     "express": "^4.18.2",
     "inversify": "^6.0.2",
-    "mysql2": "^3.6.3",
-    "reflect-metadata": "^0.1.13",
-    "ts-node": "^10.9.2"
+    "mysql2": "^3.6.5",
+    "reflect-metadata": "^0.1.14",
+    "sqlite3": "^5.1.7-rc.0"
   },
   "engines": {
     "node": "20.x"
   },
-  "type": "module"
+  "type": "module",
+  "prisma": {
+    "schema": "src/infrastructure/db/prisma/schema.prisma"
+  }
 }

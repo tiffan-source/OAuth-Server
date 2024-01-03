@@ -7,5 +7,6 @@ export const TYPES = {
   CreateUserController: Symbol.for('CreateUserController'),
   Validation: Symbol.for('Validation'),
   EmailValidation: Symbol.for('EmailValidation'),
-  RequiredValidation: Symbol.for('RequiredValidation')
+  RequiredValidation: Symbol.for('RequiredValidation'),
+  PrismaDatabaseConnection: Symbol.for('PrismaDatabaseConnection')
 }

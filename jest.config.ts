@@ -37,6 +37,5 @@ const config: Config.InitialOptions = {
       useESM: true
     }]
   }
-
 }
 export default config
