@@ -1,12 +1,16 @@
 import { TYPES } from '@symboles/types.js'
-import { ContainerModule, Container as InversifyContainer, type interfaces } from 'inversify'
 import 'dotenv/config'
+import 'reflect-metadata'
+import { ContainerModule, Container as InversifyContainer, type interfaces } from 'inversify'
 import { CreateUserController } from '@presentation/controllers/user/create-user.controller.js'
 import { type RegisterUser } from '@application/user/protocols/register-user.js'
 import { DbRegisterUser } from '@application/user/use-cases/db-register-user.js'
 import { CreateUserVineValidation } from '@infrastructure/validations/create-user.vine.validation.js'
 import { type IValidation } from '@presentation/protocols/validations/validation.js'
-import 'reflect-metadata'
+import { CreateUserPrisma } from '@infrastructure/db/prisma/user/create-user.prisma.js'
+import { PrismaDatabaseConnection } from '@infrastructure/db/prisma/database-connection.prisma.js'
+import { type DatabaseConnection } from '@data/protocols/db/database-connection.js'
+import { type CreateUserRepository } from '@data/protocols/user/create-user.repository'
 
 export class Container {
   private readonly container: InversifyContainer = new InversifyContainer()
@@ -32,7 +36,8 @@ export class Container {
 
   private getGeneralModule (): ContainerModule {
     return new ContainerModule((bind: interfaces.Bind) => {
-
+      bind<DatabaseConnection>(TYPES.DatabaseConnection).to(PrismaDatabaseConnection)
+      bind<PrismaDatabaseConnection>(TYPES.PrismaDatabaseConnection).to(PrismaDatabaseConnection)
     })
   }
 
@@ -50,6 +55,7 @@ export class Container {
 
   private getRepositoryModule (): ContainerModule {
     return new ContainerModule((bind: interfaces.Bind) => {
+      bind<CreateUserRepository>(TYPES.CreateUserRepository).to(CreateUserPrisma)
     })
   }
 

@@ -2,7 +2,7 @@ import { type DatabaseConnection } from '@data/protocols/db/database-connection'
 import { PrismaClient } from '@prisma/client'
 import { injectable } from 'inversify'
 
-injectable()
+@injectable()
 export class PrismaDatabaseConnection implements DatabaseConnection {
   private readonly prisma: PrismaClient
 

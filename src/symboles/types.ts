@@ -8,5 +8,6 @@ export const TYPES = {
   Validation: Symbol.for('Validation'),
   EmailValidation: Symbol.for('EmailValidation'),
   RequiredValidation: Symbol.for('RequiredValidation'),
-  PrismaDatabaseConnection: Symbol.for('PrismaDatabaseConnection')
+  PrismaDatabaseConnection: Symbol.for('PrismaDatabaseConnection'),
+  CreateUserPrisma: Symbol.for('CreateUserPrisma')
 }

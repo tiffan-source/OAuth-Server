@@ -1,6 +1,8 @@
 import { type ValidationError } from '@presentation/protocols/validations/validation-error'
 import { type IValidation } from '@presentation/protocols/validations/validation.js'
+import { injectable } from 'inversify'
 
+@injectable()
 export class Validation implements IValidation {
   protected validationErrors: ValidationError[] = []
 

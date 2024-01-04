@@ -15,7 +15,7 @@ export class CreateUserController implements Controller {
 
   constructor (
   @inject(TYPES.RegisterUser) registerUser: RegisterUser,
-    validation: IValidation
+    @inject(TYPES.Validation) validation: IValidation
   ) {
     this.registerUser = registerUser
     this.validation = validation
@@ -34,6 +34,8 @@ export class CreateUserController implements Controller {
 
       return created(userResult)
     } catch (error) {
+      console.log(error)
+
       return serverError(new Error())
     }
   }
