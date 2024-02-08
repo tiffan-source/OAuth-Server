@@ -9,5 +9,7 @@ export const TYPES = {
   EmailValidation: Symbol.for('EmailValidation'),
   RequiredValidation: Symbol.for('RequiredValidation'),
   PrismaDatabaseConnection: Symbol.for('PrismaDatabaseConnection'),
-  CreateUserPrisma: Symbol.for('CreateUserPrisma')
+  CreateUserPrisma: Symbol.for('CreateUserPrisma'),
+  HashRepository: Symbol.for('HashRepository'),
+  CheckUserWithEmailRepository: Symbol.for('CheckUserWithEmailRepository')
 }

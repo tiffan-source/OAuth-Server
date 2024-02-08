@@ -10,7 +10,12 @@ import { type IValidation } from '@presentation/protocols/validations/validation
 import { CreateUserPrisma } from '@infrastructure/db/prisma/user/create-user.prisma.js'
 import { PrismaDatabaseConnection } from '@infrastructure/db/prisma/database-connection.prisma.js'
 import { type DatabaseConnection } from '@data/protocols/db/database-connection.js'
-import { type CreateUserRepository } from '@data/protocols/user/create-user.repository'
+import { type CreateUserRepository } from '@data/protocols/user/create-user.repository.js'
+import { type HashRepository } from '@data/protocols/cryptography/hash.repository.js'
+import { HashBcrypt } from '@infrastructure/cryptographiy/hash.bcrypt.js'
+import { type CheckUserWithEmailRepository } from '@data/protocols/user/chek-user-with-email.repository.js'
+import { CheckUserWithEmailPrisma } from '@infrastructure/db/prisma/user/check-user-with-email.prisma.js'
+import env from '@main/configs/env.js'
 
 export class Container {
   private readonly container: InversifyContainer = new InversifyContainer()
@@ -29,6 +34,8 @@ export class Container {
 
   public functionDependencies (func: (...args: any[]) => any, dependencies: any[]): (...args: any[]) => any {
     const injections = dependencies.map((dependency) => {
+      console.log(dependency)
+
       return this.container.get(dependency)
     })
     return func.bind(func, ...injections)
@@ -56,6 +63,8 @@ export class Container {
   private getRepositoryModule (): ContainerModule {
     return new ContainerModule((bind: interfaces.Bind) => {
       bind<CreateUserRepository>(TYPES.CreateUserRepository).to(CreateUserPrisma)
+      bind<HashRepository>(TYPES.HashRepository).toConstantValue(new HashBcrypt(Number(env.salt)))
+      bind<CheckUserWithEmailRepository>(TYPES.CheckUserWithEmailRepository).to(CheckUserWithEmailPrisma)
     })
   }
 

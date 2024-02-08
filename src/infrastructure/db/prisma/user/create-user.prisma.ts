@@ -4,7 +4,6 @@ import { PrismaDatabaseConnection } from '@infrastructure/db/prisma/database-con
 import { TYPES } from '@symboles/types.js'
 import { inject, injectable } from 'inversify'
 import 'reflect-metadata'
-import { Prisma } from '@prisma/client'
 
 @injectable()
 export class CreateUserPrisma implements CreateUserRepository {
@@ -17,22 +16,14 @@ export class CreateUserPrisma implements CreateUserRepository {
   }
 
   async create (data: CreateUserRepositoryParams): Promise<CreateUserRepositoryResult> {
-    try {
-      const user = await this.prismaDatabaseConnection.getPrismaClient().user.create({
-        data: {
-          name: data.name,
-          email: data.email,
-          password: data.password
-        }
-      })
-
-      return new User(String(user.id), user.name, user.email, user.password)
-    } catch (err) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        throw new Error(err.message)
-      } else {
-        throw new Error('Unexpected error')
+    const user = await this.prismaDatabaseConnection.getPrismaClient().user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: data.password
       }
-    }
+    })
+
+    return new User(String(user.id), user.name, user.email, user.password)
   }
 }

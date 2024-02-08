@@ -8,6 +8,7 @@ import 'reflect-metadata'
 @injectable()
 export class CreateUserVineValidation extends Validation {
   async validate (user: HttpUserRegister): Promise<void> {
+    this.validationErrors = []
     try {
       const schema = vine.object({
         name: vine.string().minLength(3).maxLength(50),
@@ -18,6 +19,8 @@ export class CreateUserVineValidation extends Validation {
     } catch (error) {
       if (error instanceof errors.E_VALIDATION_ERROR) {
         for (const err of error.messages) {
+          console.log(err)
+
           this.validationErrors.push(new ValidationError(err.rule, err.field, err.message))
         }
       }

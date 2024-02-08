@@ -1,6 +1,7 @@
 import { type DatabaseConnection } from '@data/protocols/db/database-connection'
 import { PrismaClient } from '@prisma/client'
 import { injectable } from 'inversify'
+import 'reflect-metadata'
 
 @injectable()
 export class PrismaDatabaseConnection implements DatabaseConnection {

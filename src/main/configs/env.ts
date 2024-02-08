@@ -6,5 +6,6 @@ export default {
     password: process.env.MYSQL_PASSWORD ?? 'notfound404',
     database: process.env.MYSQL_DATABASE ?? 'testAPI',
     port: process.env.MYSQL_PORT ?? 3306
-  }
+  },
+  salt: process.env.SALT ?? 10
 }

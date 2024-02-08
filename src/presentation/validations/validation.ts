@@ -6,7 +6,7 @@ import { injectable } from 'inversify'
 export class Validation implements IValidation {
   protected validationErrors: ValidationError[] = []
 
-  validate (input: any): void {};
+  async validate (input: any): Promise<void> {};
 
   getErrors (): ValidationError[] {
     return this.validationErrors

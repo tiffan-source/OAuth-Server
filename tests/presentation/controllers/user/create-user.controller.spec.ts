@@ -7,6 +7,7 @@ import { RegisterUserMock } from '@tests/presentation/mocks/user/register-user.m
 import { jest } from '@jest/globals'
 import { type UserRegisterDto } from '@application/user/dtos/user-register.dto.js'
 import { Validation } from '@presentation/validations/validation.js'
+import { UserAlreadyExistError } from '@application/user/errors/user-already-exist.error.js'
 
 // type registerUserFuntion = (user: UserRegisterDto) => Promise<UserResultDto>
 
@@ -42,7 +43,7 @@ describe('Create User Controller', () => {
 
     const mockValidation = new Validation()
 
-    const validateSpy = jest.spyOn(mockValidation, 'validate').mockImplementationOnce(() => {
+    const validateSpy = jest.spyOn(mockValidation, 'validate').mockImplementationOnce(async () => {
       Reflect.set(mockValidation, 'validationErrors', [new ValidationError('any_rule', 'any_field', 'any_message')])
     })
 
@@ -59,6 +60,28 @@ describe('Create User Controller', () => {
     const response = await createUserController.handle(requestMock)
 
     expect(validateSpy).toHaveBeenCalled()
+    expect(response).toHaveProperty('statusCode', 400)
+  })
+
+  it('should return 400 status code if bad request about user already exist', async () => {
+    const registerUserMock: jest.Mocked<RegisterUser> = {
+      register: jest.fn<(user: UserRegisterDto) => Promise<never>>().mockRejectedValue(new UserAlreadyExistError())
+    }
+
+    const mockValidation = new Validation()
+
+    const createUserController = new CreateUserController(registerUserMock, mockValidation)
+
+    const requestMock: HttpUserRegister = {
+      body: {
+        email: faker.internet.email(),
+        name: faker.person.firstName(),
+        password: faker.internet.password()
+      }
+    }
+
+    const response = await createUserController.handle(requestMock)
+
     expect(response).toHaveProperty('statusCode', 400)
   })
 

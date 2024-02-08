@@ -7,6 +7,7 @@ import { type HttpUserRegister } from '@presentation/protocols/controllers/reque
 import { injectable, inject } from 'inversify'
 import { TYPES } from '@symboles/types.js'
 import { IValidation } from '@presentation/protocols/validations/validation.js'
+import { UserAlreadyExistError } from '@application/user/errors/user-already-exist.error.js'
 
 @injectable()
 export class CreateUserController implements Controller {
@@ -23,10 +24,12 @@ export class CreateUserController implements Controller {
 
   async handle (request: HttpUserRegister): Promise<HttpResponse> {
     try {
-      this.validation.validate(request)
+      await this.validation.validate(request)
 
       if (!this.validation.isValid()) {
         const error = new Error(this.validation.getErrors()[0].toString())
+        console.log(error)
+
         return badRequest(error)
       }
 
@@ -34,8 +37,9 @@ export class CreateUserController implements Controller {
 
       return created(userResult)
     } catch (error) {
-      console.log(error)
-
+      if (error instanceof UserAlreadyExistError) {
+        return badRequest(error)
+      }
       return serverError(new Error())
     }
   }
