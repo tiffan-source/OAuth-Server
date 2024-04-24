@@ -1,4 +1,4 @@
-import { type UserLoginResultDto } from '@application/user/dtos/user-login-result.dto'
+import { type UserLoginDto } from '@application/user/dtos/user-login.dto.js'
 
 export interface AuthClientDto {
   client: {
@@ -6,8 +6,8 @@ export interface AuthClientDto {
     redirectUri: string
   }
   state: string
-  code_challenge: string
+  codeChallenge: string
   scope: string[]
   nonce: string
-  user: UserLoginResultDto
+  user: UserLoginDto
 }
