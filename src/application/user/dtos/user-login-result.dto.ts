@@ -1,3 +1,3 @@
 export interface UserLoginResultDto {
-  token: string
+  user: { id: string } | null
 }

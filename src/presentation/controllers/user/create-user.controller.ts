@@ -34,7 +34,6 @@ export class CreateUserController implements Controller {
       }
 
       const userResult = await this.registerUser.register(request.body)
-
       return created(userResult)
     } catch (error) {
       if (error instanceof UserAlreadyExistError) {
