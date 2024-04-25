@@ -34,8 +34,6 @@ export class Container {
 
   public functionDependencies (func: (...args: any[]) => any, dependencies: any[]): (...args: any[]) => any {
     const injections = dependencies.map((dependency) => {
-      console.log(dependency)
-
       return this.container.get(dependency)
     })
     return func.bind(func, ...injections)

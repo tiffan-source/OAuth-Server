@@ -9,6 +9,7 @@ export interface AuthorizationCodeRepositoryParams {
   redirectUri: string
   state: string
   codeChallenge: string
+  codeChallengeMethod: string
   scope: string[]
   nonce: string
   user: {

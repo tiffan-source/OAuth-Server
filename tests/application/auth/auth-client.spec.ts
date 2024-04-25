@@ -20,16 +20,17 @@ describe('AuthClient', () => {
   const authParams: AuthClientDto = {
     client: {
       id: 'any_client_id',
-      redirectUri: 'any_redirect_uri'
+      redirectUri: 'any_redirect_uri',
+      responseType: 'any_response_type'
     },
     state: 'any_state',
     codeChallenge: 'any_codeChallenge',
-    scope: ['any_scope'],
     nonce: 'any_nonce',
     user: {
       email: 'any_email',
       password: 'any_password'
-    }
+    },
+    codeChallengeMethod: ''
   }
 
   it('should return data of type AuthClientResultDto', async () => {

@@ -28,8 +28,6 @@ export class CreateUserController implements Controller {
 
       if (!this.validation.isValid()) {
         const error = new Error(this.validation.getErrors()[0].toString())
-        console.log(error)
-
         return badRequest(error)
       }
 

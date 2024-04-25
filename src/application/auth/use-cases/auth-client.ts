@@ -18,7 +18,7 @@ export class AuthClient implements IAuthClient {
   }
 
   async auth (authClient: AuthClientDto): Promise<AuthClientResultDto> {
-    const { client, state, codeChallenge, user, scope, nonce } = authClient
+    const { client, state, codeChallenge, codeChallengeMethod, user, nonce } = authClient
 
     const userLogin = await this.loginUser.login(user)
 
@@ -29,12 +29,13 @@ export class AuthClient implements IAuthClient {
     try {
       const authCode = await this.authorizationCodeRepository.authorizationCode({
         clientId: client.id,
-        redirectUri: client.redirectUri,
+        redirectUri: client.redirectUri[0],
         state,
         codeChallenge,
-        user: userLogin.user,
-        scope,
-        nonce
+        codeChallengeMethod,
+        scope: client.scope ?? [],
+        nonce,
+        user: userLogin.user
       })
 
       return {
