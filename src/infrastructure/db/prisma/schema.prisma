@@ -10,9 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String
   password  String
+}
+
+model GrantType {
+    id        Int     @id @default(autoincrement())
+    name      String  @unique
+    client    GrantTypeOnClient[]
+}
+
+model Client {
+    id        Int     @id @default(autoincrement())
+    clientId  String  @unique
+    clientSecret  String
+    redirectUri  RedirectUri[]
+    grantType    GrantTypeOnClient[]
+}
+
+model GrantTypeOnClient {
+    client    Client  @relation(fields: [clientId], references: [clientId])
+    clientId  String
+    grantType  GrantType  @relation(fields: [grantTypeId], references: [id])
+    grantTypeId  Int
+
+    @@id([clientId, grantTypeId])
+}
+
+model RedirectUri {
+    id        Int     @id @default(autoincrement())
+    uri       String
+    client    Client  @relation(fields: [clientId], references: [clientId])
+    clientId  String
 }

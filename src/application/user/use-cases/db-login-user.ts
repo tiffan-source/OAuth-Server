@@ -17,18 +17,18 @@ export class DbLoginUser implements LoginUser {
   }
 
   async login (user: UserLoginDto): Promise<UserLoginResultDto> {
-    const userFound = await this.findUserByEmailRepository.findUserByEmail({ email: user.email })
+    const userFound = await this.findUserByEmailRepository.findUserByEmail(user.email)
 
-    if (userFound.user === null) {
+    if (userFound === null) {
       return { user: null }
     }
 
-    const passwordMatch = await this.compareHashRepository.compare(user.password, userFound.user.getPassword())
+    const passwordMatch = await this.compareHashRepository.compare(user.password, userFound.getPassword())
 
     if (!passwordMatch) {
       return { user: null }
     }
 
-    return { user: { id: userFound.user.getId() } }
+    return { user: { id: userFound.getId() } }
   }
 }

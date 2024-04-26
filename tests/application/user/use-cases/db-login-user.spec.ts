@@ -6,7 +6,7 @@ import { jest } from '@jest/globals'
 
 describe('DbLoginUser', () => {
   const findUserByEmailRepository: jest.Mocked<FindUserByEmailRepository> = {
-    findUserByEmail: jest.fn<(user: FindUserByEmailRepositoryParams) => Promise<FindUserByEmailRepositoryResult>>().mockResolvedValue({ user: null })
+    findUserByEmail: jest.fn<(user: FindUserByEmailRepositoryParams) => Promise<FindUserByEmailRepositoryResult>>().mockResolvedValue(null)
   }
 
   const compareHashRepository: jest.Mocked<CompareHashRepository> = {
@@ -56,7 +56,7 @@ describe('DbLoginUser', () => {
       password: 'any_password'
     })
 
-    expect(findUserByEmailRepository.findUserByEmail).toHaveBeenCalledWith({ email: 'any_email' })
+    expect(findUserByEmailRepository.findUserByEmail).toHaveBeenCalledWith('any_email')
   })
 
   it('should call compareHashRepository with correct values', async () => {
@@ -64,7 +64,7 @@ describe('DbLoginUser', () => {
 
     const user: User = new User('any_id', 'any_name', 'any_email', 'hashed_password')
 
-    findUserByEmailRepository.findUserByEmail.mockResolvedValue({ user })
+    findUserByEmailRepository.findUserByEmail.mockResolvedValue(user)
 
     await loginUser.login({
       email: 'any_email',
@@ -79,7 +79,7 @@ describe('DbLoginUser', () => {
 
     const user: User = new User('any_id', 'any_name', 'any_email', 'hashed_password')
 
-    findUserByEmailRepository.findUserByEmail.mockResolvedValue({ user })
+    findUserByEmailRepository.findUserByEmail.mockResolvedValue(user)
     compareHashRepository.compare.mockResolvedValue(true)
 
     const result = await loginUser.login({

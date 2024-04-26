@@ -4,7 +4,7 @@ export class Client {
     private readonly secret: string,
     private readonly redirectUri: string[],
     private readonly scope: string[],
-    private readonly responsesTypes: string[]
+    private readonly grants: string[]
   ) {}
 
   public getId (): string {
@@ -23,7 +23,7 @@ export class Client {
     return this.scope
   }
 
-  public getResponsesTypes (): string[] {
-    return this.responsesTypes
+  public getGrants (): string[] {
+    return this.grants
   }
 }

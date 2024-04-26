@@ -1,11 +1,11 @@
 import { VerifyAuthClientRequest } from '@application/auth/use-cases/verify-auth-client-request.js'
-import { type ClientResult, type GetClientByIdRepository } from '@data/protocols/auth/get-client-by-id.repository.js'
 import { Client } from '@domain/auth/entity/client.js'
 import { jest } from '@jest/globals'
 import { type ClientDto } from '@application/auth/dtos/client.dto.js'
+import { type ClientResult, type GetClientByClientIdRepository } from '@data/protocols/auth/get-client-by-clientid.repository.js'
 
 describe('VerifyAuthClientRequest', () => {
-  const getClientByIdRepositoryMock: jest.Mocked<GetClientByIdRepository> = {
+  const getClientByIdRepositoryMock: jest.Mocked<GetClientByClientIdRepository> = {
     getClientById: jest.fn<(id: string) => Promise<ClientResult>>()
   }
 
@@ -13,21 +13,21 @@ describe('VerifyAuthClientRequest', () => {
     id: 'any_id',
     redirectUri: 'any_redirect_uri',
     scope: ['any_scope'],
-    responseType: 'any_response_type'
+    responseType: 'code'
   }
 
   it('should return data of type ValideClientDto', async () => {
     const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
-    getClientByIdRepositoryMock.getClientById.mockResolvedValue({ client: null })
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(null)
 
     const result = await verifyAuthClientRequest.verify(clientDto)
 
     expect(result).toHaveProperty('valid')
   })
 
-  it('should call verify of GetClientByIdRepository', async () => {
+  it('should call verify of GetClientByClientIdRepository', async () => {
     const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
-    getClientByIdRepositoryMock.getClientById.mockResolvedValue({ client: null })
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(null)
 
     const verify = jest.spyOn(getClientByIdRepositoryMock, 'getClientById')
 
@@ -38,7 +38,7 @@ describe('VerifyAuthClientRequest', () => {
 
   it('should return false if client is not found', async () => {
     const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
-    getClientByIdRepositoryMock.getClientById.mockResolvedValue({ client: null })
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(null)
 
     const result = await verifyAuthClientRequest.verify(clientDto)
 
@@ -56,7 +56,7 @@ describe('VerifyAuthClientRequest', () => {
       ['any_response_type']
     )
 
-    getClientByIdRepositoryMock.getClientById.mockResolvedValue({ client })
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
 
     const result = await verifyAuthClientRequest.verify(clientDto)
 
@@ -74,14 +74,14 @@ describe('VerifyAuthClientRequest', () => {
       ['any_response_type']
     )
 
-    getClientByIdRepositoryMock.getClientById.mockResolvedValue({ client })
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
 
     const result = await verifyAuthClientRequest.verify(clientDto)
 
     expect(result.valid).toBe(false)
   })
 
-  it('should return false if responseTypes is not valid', async () => {
+  it('should return false if responseType is code and client don\'t have Authorization code in grant field', async () => {
     const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
 
     const client = new Client(
@@ -92,7 +92,7 @@ describe('VerifyAuthClientRequest', () => {
       ['no_match_response_type']
     )
 
-    getClientByIdRepositoryMock.getClientById.mockResolvedValue({ client })
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
 
     const result = await verifyAuthClientRequest.verify(clientDto)
 
@@ -107,10 +107,10 @@ describe('VerifyAuthClientRequest', () => {
       'any_secret',
       ['any_redirect_uri'],
       ['any_scope'],
-      ['any_response_type']
+      ['Authorization Code']
     )
 
-    getClientByIdRepositoryMock.getClientById.mockResolvedValue({ client })
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
 
     const result = await verifyAuthClientRequest.verify(clientDto)
 

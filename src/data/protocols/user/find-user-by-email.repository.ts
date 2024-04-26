@@ -4,10 +4,6 @@ export interface FindUserByEmailRepository {
   findUserByEmail: (user: FindUserByEmailRepositoryParams) => Promise<FindUserByEmailRepositoryResult>
 }
 
-export interface FindUserByEmailRepositoryParams {
-  email: string
-}
+export type FindUserByEmailRepositoryParams = string
 
-export interface FindUserByEmailRepositoryResult {
-  user: User | null
-}
+export type FindUserByEmailRepositoryResult = User | null

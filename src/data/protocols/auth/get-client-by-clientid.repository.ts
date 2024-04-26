@@ -1,9 +1,7 @@
 import { type Client } from '@domain/auth/entity/client'
 
-export interface GetClientByIdRepository {
+export interface GetClientByClientIdRepository {
   getClientById: (id: string) => Promise<ClientResult>
 }
 
-export interface ClientResult {
-  client: Client | null
-}
+export type ClientResult = Client | null
