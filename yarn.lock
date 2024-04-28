@@ -811,6 +811,20 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
+"@node-oauth/formats@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@node-oauth/formats/-/formats-1.0.0.tgz"
+  integrity sha512-DwSbLtdC8zC5B5gTJkFzJj5s9vr9SGzOgQvV9nH7tUVuMSScg0EswAczhjIapOmH3Y8AyP7C4Jv7b8+QJObWZA==
+
+"@node-oauth/oauth2-server@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.npmjs.org/@node-oauth/oauth2-server/-/oauth2-server-5.1.0.tgz"
+  integrity sha512-sYvqL1GeZLRSwgl++/oOzxJj/ZBe2yXnp6E5LGNQ5qjpn0+t/dwquXILUe3Sk2Y8/wU7XeRxToOtBVeSVkuJag==
+  dependencies:
+    "@node-oauth/formats" "1.0.0"
+    basic-auth "2.0.1"
+    type-is "1.6.18"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -1641,6 +1655,13 @@ base64-js@^1.3.1:
   version "1.5.1"
   resolved "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
+
+basic-auth@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/basic-auth/-/basic-auth-2.0.1.tgz"
+  integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
+  dependencies:
+    safe-buffer "5.1.2"
 
 bcrypt@^5.1.1:
   version "5.1.1"
@@ -6319,7 +6340,7 @@ type-fest@^3.0.0:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-3.13.1.tgz"
   integrity sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==
 
-type-is@~1.6.18:
+type-is@~1.6.18, type-is@1.6.18:
   version "1.6.18"
   resolved "https://registry.npmjs.org/type-is/-/type-is-1.6.18.tgz"
   integrity sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==

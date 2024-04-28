@@ -5,7 +5,7 @@ import { type UserLoginResultDto } from '@application/user/dtos/user-login-resul
 import { type UserLoginDto } from '@application/user/dtos/user-login.dto.js'
 import { AuthClient } from '@application/auth/use-cases/auth-client.js'
 import { UserLoginIncorrectError } from '@application/auth/errors/user-login-incorrect.error.js'
-import { AuthoriationCode } from '@domain/auth/entity/authorization-code.js'
+import { AuthorizationCode } from '@domain/auth/entity/authorization-code.js'
 import { type AuthClientDto } from '@application/auth/dtos/auth-client.dto.js'
 
 describe('AuthClient', () => {
@@ -35,7 +35,7 @@ describe('AuthClient', () => {
 
   it('should return data of type AuthClientResultDto', async () => {
     const authClient = new AuthClient(authorizationCodeRepositoryMock, loginUserMock)
-    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthoriationCode('any_code', new Date()))
+    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthorizationCode('any_code', new Date(), 'any_redirect_uri'))
     loginUserMock.login.mockResolvedValue({ user: { id: 'any_id' } })
 
     const result = await authClient.auth(authParams)
@@ -46,7 +46,7 @@ describe('AuthClient', () => {
 
   it('should call auth of AuthorizationCodeRepository', async () => {
     const authClient = new AuthClient(authorizationCodeRepositoryMock, loginUserMock)
-    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthoriationCode('any_code', new Date()))
+    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthorizationCode('any_code', new Date(), 'any_redirect_uri'))
     loginUserMock.login.mockResolvedValue({ user: { id: 'any_id' } })
 
     const verify = jest.spyOn(authorizationCodeRepositoryMock, 'authorizationCode')
@@ -58,7 +58,7 @@ describe('AuthClient', () => {
 
   it('should call login of LoginUser', async () => {
     const authClient = new AuthClient(authorizationCodeRepositoryMock, loginUserMock)
-    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthoriationCode('any_code', new Date()))
+    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthorizationCode('any_code', new Date(), 'any_redirect_uri'))
     loginUserMock.login.mockResolvedValue({ user: { id: 'any_id' } })
 
     const verify = jest.spyOn(loginUserMock, 'login')
@@ -84,7 +84,7 @@ describe('AuthClient', () => {
 
   it('should return the same state', async () => {
     const authClient = new AuthClient(authorizationCodeRepositoryMock, loginUserMock)
-    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthoriationCode('any_code', new Date()))
+    authorizationCodeRepositoryMock.authorizationCode.mockResolvedValue(new AuthorizationCode('any_code', new Date(), 'any_redirect_uri'))
     loginUserMock.login.mockResolvedValue({ user: { id: 'any_id' } })
     const result = await authClient.auth(authParams)
 

@@ -16,6 +16,7 @@ model User {
   email     String   @unique
   name      String
   password  String
+  authCode  AuthorizationCode[]
 }
 
 model GrantType {
@@ -30,6 +31,7 @@ model Client {
     clientSecret  String
     redirectUri  RedirectUri[]
     grantType    GrantTypeOnClient[]
+    authorizationCode  AuthorizationCode[]
 }
 
 model GrantTypeOnClient {
@@ -46,4 +48,19 @@ model RedirectUri {
     uri       String
     client    Client  @relation(fields: [clientId], references: [clientId])
     clientId  String
+    authorizationCode  AuthorizationCode[]
+}
+
+model AuthorizationCode {
+    id        Int     @id @default(autoincrement())
+    code      String  @unique
+    expiresAt DateTime
+    codeChallenge  String?
+    codeChallengeMethod  String?
+    client    Client  @relation(fields: [clientId], references: [clientId])
+    clientId  String
+    user      User    @relation(fields: [userId], references: [id])
+    userId    Int
+    redirectUri  RedirectUri  @relation(fields: [redirectUriId], references: [id])
+    redirectUriId  Int
 }
