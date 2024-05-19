@@ -35,6 +35,7 @@ export class AuthClient implements IAuthClient {
         codeChallengeMethod,
         scope: client.scope ?? [],
         nonce,
+        responseType: client.responseType,
         user: userLogin.user
       })
 

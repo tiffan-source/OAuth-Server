@@ -8,7 +8,9 @@ export class VerifyAuthClientRequest implements IVerifyAuthClientRequest {
   private readonly reasonMessage: string[] = [
     'Client not found',
     'RedirectUri not valid',
-    'ResponseType not valid'
+    'ResponseType not valid',
+    'Code Challenge and Code Challenge Method are required',
+    'Code Challenge is not valid'
   ]
 
   constructor (getClientById: GetClientByClientIdRepository) {
@@ -16,7 +18,7 @@ export class VerifyAuthClientRequest implements IVerifyAuthClientRequest {
   }
 
   async verify (authClientRequest: ClientDto): Promise<ValideClientDto> {
-    const { id, redirectUri, responseType, scope } = authClientRequest
+    const { id, redirectUri, responseType, scope, codeChallenge, codeChallengeMethod } = authClientRequest
 
     const client = await this.getClientByIdRepository.getClientById(id)
 
@@ -37,6 +39,19 @@ export class VerifyAuthClientRequest implements IVerifyAuthClientRequest {
         if (!client.getScope().includes(scopeValue)) {
           return { valid: false, reason: 'Scope not valid' }
         }
+      }
+    }
+
+    if (
+      (codeChallenge === undefined && codeChallengeMethod !== undefined) ||
+        (codeChallenge !== undefined && codeChallengeMethod === undefined)
+    ) {
+      return { valid: false, reason: 'Code Challenge and Code Challenge Method are required' }
+    }
+
+    if (codeChallenge !== undefined && codeChallengeMethod !== undefined) {
+      if (codeChallengeMethod !== 'S256') {
+        return { valid: false, reason: 'Code Challenge Method not valid' }
       }
     }
 

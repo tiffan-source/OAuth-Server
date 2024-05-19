@@ -48,7 +48,7 @@ describe('OAuthModel', () => {
   })
 
   it('should get client with expected field if client found', async () => {
-    const client = new Client('clientId', 'clientSecret', ['redirectUri'], ['scope'], ['authorization_code'])
+    const client = new Client('clientId', 'clientSecret', ['redirectUri'], ['scope'], ['Authorization Code'])
 
     getClientByClientIdAndClientSecretRepository.getClientByClientIdAndClientSecret.mockResolvedValue(client)
 
@@ -66,7 +66,7 @@ describe('OAuthModel', () => {
   })
 
   it('should get client using just clientId', async () => {
-    const client = new Client('clientId', 'clientSecret', ['redirectUri'], ['scope'], ['authorization_code'])
+    const client = new Client('clientId', 'clientSecret', ['redirectUri'], ['scope'], ['Authorization Code'])
 
     getClientByClientIdRepository.getClientById.mockResolvedValue(client)
 
@@ -149,15 +149,77 @@ describe('OAuthModel', () => {
     }
   })
 
-  it('should save authorization code without non require field and return expected field of data saving', async () => {
+  it('should save authorization code and return [] for scope if not provided', async () => {
     const date = new Date()
+
+    const client = new Client('clientId', 'clientSecret', ['redirectUri'], ['scope'], ['Authorization Code'])
+    getClientByClientIdRepository.getClientById.mockResolvedValue(client)
 
     const authCodeParams = {
       code: 'authorizationCode',
       expiresAt: date,
       redirectUri: 'redirectUri',
       clientId: 'clientId',
-      userId: 'userId'
+      userId: 'userId',
+      scope: [],
+      codeChallenge: 'codeChallenge',
+      codeChallengeMethod: 'codeChallengeMethod'
+    }
+
+    const resultCode = new AuthorizationCode('authorizationCode', date, 'redirectUri')
+
+    createAuthorizationCodeRepository.createAuthorizationCode.mockResolvedValue(resultCode)
+
+    const code = await oauthModel.saveAuthorizationCode(
+      {
+        authorizationCode: 'authorizationCode',
+        expiresAt: date,
+        redirectUri: 'redirectUri',
+        codeChallenge: 'codeChallenge',
+        codeChallengeMethod: 'codeChallengeMethod'
+      },
+      {
+        id: 'clientId',
+        redirectUris: ['redirectUri'],
+        grants: ['authorization_code']
+      },
+      {
+        id: 'userId'
+      }
+    )
+
+    expect(createAuthorizationCodeRepository.createAuthorizationCode).toHaveBeenCalledWith(authCodeParams)
+
+    expect(code).toBeTruthy()
+    if (code instanceof Object) {
+      expect(code.authorizationCode).toEqual('authorizationCode')
+      expect(code.expiresAt).toEqual(date)
+      expect(code.redirectUri).toEqual('redirectUri')
+      expect(code.scope).toEqual([])
+      expect(code.client).toEqual({
+        id: 'clientId',
+        grants: ['authorization_code'],
+        redirectUris: ['redirectUri']
+      })
+      expect(code.user).toEqual({ id: 'userId' })
+    } else {
+      expect(true).toBeFalsy()
+    }
+  })
+
+  it('should save authorization code without non require field and return expected field of data saving', async () => {
+    const date = new Date()
+
+    const client = new Client('clientId', 'clientSecret', ['redirectUri'], ['scope'], ['Authorization Code'])
+    getClientByClientIdRepository.getClientById.mockResolvedValue(client)
+
+    const authCodeParams = {
+      code: 'authorizationCode',
+      expiresAt: date,
+      redirectUri: 'redirectUri',
+      clientId: 'clientId',
+      userId: 'userId',
+      scope: []
     }
 
     const resultCode = new AuthorizationCode('authorizationCode', date, 'redirectUri')
@@ -187,7 +249,7 @@ describe('OAuthModel', () => {
       expect(code.authorizationCode).toEqual('authorizationCode')
       expect(code.expiresAt).toEqual(date)
       expect(code.redirectUri).toEqual('redirectUri')
-      expect(code.scope).toEqual(undefined)
+      expect(code.scope).toEqual([])
       expect(code.client).toEqual({
         id: 'clientId',
         grants: ['authorization_code'],

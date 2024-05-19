@@ -41,7 +41,7 @@ export class OAuthModel implements AuthorizationCodeModel {
 
     return {
       id: result.getId(),
-      grants: result.getGrants(),
+      grants: result.getGrants().map(grant => grant === 'Authorization Code' ? 'authorization_code' : grant),
       redirectUris: result.getRedirectUri()
     }
   }
@@ -56,16 +56,18 @@ export class OAuthModel implements AuthorizationCodeModel {
       return clientResult
     }
 
-    const authCode = await this.createAuthorizationCodeRepository.createAuthorizationCode({
+    const createAuthParams = {
       code: code.authorizationCode,
       expiresAt: code.expiresAt,
       redirectUri: code.redirectUri,
-      scope: code.scope,
+      scope: code.scope ?? [],
       clientId: client.id,
       userId: user.id,
-      codeChallenge: code.codeChallenge,
-      codeChallengeMethod: code.codeChallengeMethod
-    })
+      ...(code.codeChallenge !== undefined && { codeChallenge: code.codeChallenge }),
+      ...(code.codeChallengeMethod !== undefined && { codeChallengeMethod: code.codeChallengeMethod })
+    }
+
+    const authCode = await this.createAuthorizationCodeRepository.createAuthorizationCode(createAuthParams)
 
     return {
       authorizationCode: authCode.getAuthorizationCode(),
@@ -73,10 +75,10 @@ export class OAuthModel implements AuthorizationCodeModel {
       redirectUri: authCode.getRedirectUri(),
       codeChallenge: authCode.getCodeChallenge(),
       codeChallengeMethod: authCode.getCodeChallengeMethod(),
-      scope: code.scope,
+      scope: code.scope ?? [],
       client: {
         id: clientResult.getId(),
-        grants: clientResult.getGrants(),
+        grants: clientResult.getGrants().map(grant => grant === 'Authorization Code' ? 'authorization_code' : grant),
         redirectUris: clientResult.getRedirectUri()
       },
       user: { id: user.id }
@@ -100,7 +102,7 @@ export class OAuthModel implements AuthorizationCodeModel {
       codeChallengeMethod: authCodeResult.getCodeChallengeMethod(),
       client: {
         id: client.getId(),
-        grants: client.getGrants(),
+        grants: client.getGrants().map(grant => grant === 'Authorization Code' ? 'authorization_code' : grant),
         redirectUris: client.getRedirectUri()
       },
       user: { id: user.getId() }

@@ -1,4 +1,4 @@
-import { OAuth2Server } from '@node-oauth/oauth2-server'
+import OAuth2Server from '@node-oauth/oauth2-server'
 import { type OAuthModel } from '@infrastructure/oauth2-server/oauth-models.js'
 
 export class OAuthServer {

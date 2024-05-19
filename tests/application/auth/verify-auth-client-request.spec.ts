@@ -11,7 +11,7 @@ describe('VerifyAuthClientRequest', () => {
 
   const clientDto: ClientDto = {
     id: 'any_id',
-    redirectUri: 'any_redirect_uri',
+    redirectUri: 'http://example.com/callback',
     scope: ['any_scope'],
     responseType: 'code'
   }
@@ -43,17 +43,43 @@ describe('VerifyAuthClientRequest', () => {
     const result = await verifyAuthClientRequest.verify(clientDto)
 
     expect(result.valid).toBe(false)
+    expect(result.reason).toContain('Client')
   })
 
-  it('should return false if redirectUri is not valid', async () => {
+  /**
+   * The controlle about the redirectUri is in the controller
+   */
+
+  //   it('should return false if redirectUri is not valid', async () => {
+  //     const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
+
+  //     const client = new Client(
+  //       'any_id',
+  //       'any_secret',
+  //       ['no_match_redirect_uri'],
+  //       ['any_scope'],
+  //       ['Authorization Code']
+  //     )
+
+  //     getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
+
+  //     clientDto.redirectUri = 'no_match_redirect_uri'
+  //     const result = await verifyAuthClientRequest.verify(clientDto)
+  //     clientDto.redirectUri = 'http://example.com/callback'
+
+  //     expect(result.valid).toBe(false)
+  //     expect(result.reason).toContain('RedirectUri')
+  //   })
+
+  it('should return false if redirectUri doesn\'t match', async () => {
     const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
 
     const client = new Client(
       'any_id',
       'any_secret',
-      ['no_match_redirect_uri'],
+      ['http://example.com/callback2'],
       ['any_scope'],
-      ['any_response_type']
+      ['Authorization Code']
     )
 
     getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
@@ -61,6 +87,7 @@ describe('VerifyAuthClientRequest', () => {
     const result = await verifyAuthClientRequest.verify(clientDto)
 
     expect(result.valid).toBe(false)
+    expect(result.reason).toContain('RedirectUri')
   })
 
   it('should return false if scopes is not valid', async () => {
@@ -69,9 +96,9 @@ describe('VerifyAuthClientRequest', () => {
     const client = new Client(
       'any_id',
       'any_secret',
-      ['any_redirect_uri'],
+      ['http://example.com/callback'],
       ['no_match_scope'],
-      ['any_response_type']
+      ['Authorization Code']
     )
 
     getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
@@ -79,6 +106,8 @@ describe('VerifyAuthClientRequest', () => {
     const result = await verifyAuthClientRequest.verify(clientDto)
 
     expect(result.valid).toBe(false)
+    expect(result.reason).toContain('Scope')
+    expect(result.reason).toContain('valid')
   })
 
   it('should return false if responseType is code and client don\'t have Authorization code in grant field', async () => {
@@ -87,7 +116,7 @@ describe('VerifyAuthClientRequest', () => {
     const client = new Client(
       'any_id',
       'any_secret',
-      ['any_redirect_uri'],
+      ['http://example.com/callback'],
       ['any_scope'],
       ['no_match_response_type']
     )
@@ -99,13 +128,53 @@ describe('VerifyAuthClientRequest', () => {
     expect(result.valid).toBe(false)
   })
 
+  it('should return false if challenge method and chalenge code are not both set', async () => {
+    const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
+
+    const client = new Client(
+      'any_id',
+      'any_secret',
+      ['http://example.com/callback'],
+      ['any_scope'],
+      ['Authorization Code']
+    )
+
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
+
+    const result = await verifyAuthClientRequest.verify({ ...clientDto, codeChallenge: 'S256' })
+
+    expect(result.valid).toBe(false)
+    expect(result.reason).toContain('Code Challenge')
+    expect(result.reason).toContain('Code Challenge Method')
+  })
+
+  it('should return false if challenge method is not valid', async () => {
+    const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
+
+    const client = new Client(
+      'any_id',
+      'any_secret',
+      ['http://example.com/callback'],
+      ['any_scope'],
+      ['Authorization Code']
+    )
+
+    getClientByIdRepositoryMock.getClientById.mockResolvedValue(client)
+
+    const result = await verifyAuthClientRequest.verify({ ...clientDto, codeChallenge: 'any_code_challenge', codeChallengeMethod: 'S256invalid' })
+
+    expect(result.valid).toBe(false)
+    expect(result.reason).toContain('Code Challenge Method')
+    expect(result.reason).toContain('valid')
+  })
+
   it('should return true if client is valid', async () => {
     const verifyAuthClientRequest = new VerifyAuthClientRequest(getClientByIdRepositoryMock)
 
     const client = new Client(
       'any_id',
       'any_secret',
-      ['any_redirect_uri'],
+      ['http://example.com/callback'],
       ['any_scope'],
       ['Authorization Code']
     )

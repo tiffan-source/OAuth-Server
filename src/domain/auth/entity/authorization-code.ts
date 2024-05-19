@@ -3,7 +3,7 @@ export class AuthorizationCode {
     private readonly authorizationCode: string,
     private readonly expiresAt: Date,
     private readonly redirectUri: string,
-    private readonly scope?: string,
+    private readonly scope?: string[],
     private readonly codeChallenge?: string,
     private readonly codeChallengeMethod?: string
   ) {}
@@ -28,7 +28,7 @@ export class AuthorizationCode {
     return this.codeChallengeMethod
   }
 
-  public getScope (): string | undefined {
+  public getScope (): string[] | undefined {
     return this.scope
   }
 }

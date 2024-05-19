@@ -4,4 +4,6 @@ export interface ClientDto {
   redirectUri: string
   scope?: string[]
   responseType: string
+  codeChallenge?: string
+  codeChallengeMethod?: string
 }
