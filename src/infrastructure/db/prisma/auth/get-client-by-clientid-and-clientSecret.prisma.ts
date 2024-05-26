@@ -1,22 +1,23 @@
+import { type GetClientByClientIdAndClientSecretRepository } from '@data/protocols/auth/get-client-by-clientid-and-clientSecret.repository.js'
+import { type PrismaDatabaseConnection } from '../database-connection.prisma.js'
 import { Client } from '@domain/auth/entity/client.js'
-import { type PrismaDatabaseConnection } from '@infrastructure/db/prisma/database-connection.prisma.js'
-import { type GetClientByClientIdRepository } from '@data/protocols/auth/get-client-by-clientid.repository.js'
 
-export class GetClientByClientIdPrisma implements GetClientByClientIdRepository {
+export class GetClientByClientIdAndClientSecretPrisma implements GetClientByClientIdAndClientSecretRepository {
   private readonly prismaDatabaseConnection
 
   constructor (prismaDatabaseConnection: PrismaDatabaseConnection) {
     this.prismaDatabaseConnection = prismaDatabaseConnection
   }
 
-  async getClientById (id: string): Promise<Client | null> {
+  async getClientByClientIdAndClientSecret (id: string, clientSecret: string): Promise<Client | null> {
     const client = await this.prismaDatabaseConnection.getPrismaClient().client.findUnique({
       include: {
         redirectUri: true,
         grantType: true
       },
       where: {
-        clientId: id
+        clientId: id,
+        clientSecret
       }
     })
 

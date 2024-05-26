@@ -9,7 +9,7 @@ export interface CreateAuthorizationCodeRepositoryParams {
   expiresAt: Date
   redirectUri: string
   clientId: string
-  userId: string
+  userId: number
   scope?: string[]
   codeChallenge?: string
   codeChallengeMethod?: string
