@@ -1,4 +1,4 @@
 export interface HttpResponse {
   statusCode: number
-  body: any
+  body: Record<string, unknown> | string | null
 }

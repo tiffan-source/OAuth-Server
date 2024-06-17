@@ -6,7 +6,6 @@ import { CreateUserController } from '@presentation/controllers/user/create-user
 import { type RegisterUser } from '@application/user/protocols/register-user.js'
 import { DbRegisterUser } from '@application/user/use-cases/db-register-user.js'
 import { CreateUserVineValidation } from '@infrastructure/validations/create-user.vine.validation.js'
-import { type IValidation } from '@presentation/protocols/validations/validation.js'
 import { CreateUserPrisma } from '@infrastructure/db/prisma/user/create-user.prisma.js'
 import { PrismaDatabaseConnection } from '@infrastructure/db/prisma/database-connection.prisma.js'
 import { type DatabaseConnection } from '@data/protocols/db/database-connection.js'
@@ -16,6 +15,7 @@ import { HashBcrypt } from '@infrastructure/cryptographiy/hash.bcrypt.js'
 import { type CheckUserWithEmailRepository } from '@data/protocols/user/chek-user-with-email.repository.js'
 import { CheckUserWithEmailPrisma } from '@infrastructure/db/prisma/user/check-user-with-email.prisma.js'
 import env from '@main/configs/env.js'
+import { type UserRegisterValidation } from '@presentation/protocols/validations/user-registration.validation.js'
 
 export class Container {
   private readonly container: InversifyContainer = new InversifyContainer()
@@ -48,7 +48,7 @@ export class Container {
 
   private getValidationModule (): ContainerModule {
     return new ContainerModule((bind: interfaces.Bind) => {
-      bind<IValidation>(TYPES.Validation).to(CreateUserVineValidation)
+      bind<UserRegisterValidation>(TYPES.UserRegisterValidation).to(CreateUserVineValidation)
     })
   }
 
