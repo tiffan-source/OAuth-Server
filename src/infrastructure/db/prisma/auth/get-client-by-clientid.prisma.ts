@@ -1,11 +1,17 @@
 import { Client } from '@domain/auth/entity/client.js'
 import { type PrismaDatabaseConnection } from '@infrastructure/db/prisma/database-connection.prisma.js'
 import { type GetClientByClientIdRepository } from '@data/protocols/auth/get-client-by-clientid.repository.js'
+import { inject, injectable } from 'inversify'
+import { TYPES } from '@symboles/types.js'
 
+@injectable()
 export class GetClientByClientIdPrisma implements GetClientByClientIdRepository {
   private readonly prismaDatabaseConnection
 
-  constructor (prismaDatabaseConnection: PrismaDatabaseConnection) {
+  constructor (
+  @inject(TYPES.PrismaDatabaseConnection)
+    prismaDatabaseConnection: PrismaDatabaseConnection
+  ) {
     this.prismaDatabaseConnection = prismaDatabaseConnection
   }
 

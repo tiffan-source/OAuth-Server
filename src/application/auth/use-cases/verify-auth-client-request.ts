@@ -2,7 +2,11 @@ import { type VerifyAuthClientRequest as IVerifyAuthClientRequest } from '@appli
 import { type ClientDto } from '@application/auth/dtos/client.dto.js'
 import { type ValideClientDto } from '@application/auth/dtos/valide-client.dto.js'
 import { type GetClientByClientIdRepository } from '@data/protocols/auth/get-client-by-clientid.repository.js'
+import { inject, injectable } from 'inversify'
+import { TYPES } from '@symboles/types.js'
+import 'reflect-metadata'
 
+@injectable()
 export class VerifyAuthClientRequest implements IVerifyAuthClientRequest {
   private readonly getClientByIdRepository: GetClientByClientIdRepository
   private readonly reasonMessage: string[] = [
@@ -13,7 +17,9 @@ export class VerifyAuthClientRequest implements IVerifyAuthClientRequest {
     'Code Challenge is not valid'
   ]
 
-  constructor (getClientById: GetClientByClientIdRepository) {
+  constructor (
+  @inject(TYPES.GetClientByClientIdRepository) getClientById: GetClientByClientIdRepository
+  ) {
     this.getClientByIdRepository = getClientById
   }
 

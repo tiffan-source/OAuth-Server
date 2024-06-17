@@ -11,6 +11,6 @@ export const adaptController = (controller: Controller) => {
 
     const httpResponse = await controller.handle(request)
 
-    res.status(httpResponse.statusCode).json(httpResponse.body)
+    if (typeof httpResponse.body === 'string') { res.status(httpResponse.statusCode).send(httpResponse) } else { res.status(httpResponse.statusCode).json(httpResponse.body) }
   }
 }

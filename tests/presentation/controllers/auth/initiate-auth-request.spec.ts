@@ -1,8 +1,8 @@
 import { type VerifyAuthClientRequest } from '@application/auth/protocols/verify-auth-client-request.js'
 import { InitiateAuthRequestController } from '@presentation/controllers/auth/initiate-auth-request.controller.js'
 import { type AuthValidation } from '@presentation/protocols/validations/auth.validation.js'
-import { type ErrorInitiateAuthPageRenderer } from '@presentation/renderers/error-initiate-auth-page.renderer.js'
-import { type LoginPageRenderer } from '@presentation/renderers/login-page.renderer.js'
+import { type ErrorInitiateAuthPageRenderer } from '@presentation/protocols/renderers/error-initiate-auth-page.renderer.js'
+import { type LoginPageRenderer } from '@presentation/protocols/renderers/login-page.renderer.js'
 import { jest } from '@jest/globals'
 import { ValidationError } from '@presentation/protocols/validations/validation-error.js'
 

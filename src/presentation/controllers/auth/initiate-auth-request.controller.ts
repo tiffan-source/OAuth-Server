@@ -3,8 +3,8 @@ import { badRequest, notAllowPage, page, serverError } from '@presentation/helpe
 import { type HttpAuthInitiate } from '@presentation/protocols/controllers/request/auth/httpAuthInitiate.js'
 import { type HttpResponse } from '@presentation/protocols/controllers/response/httpResponse.js'
 import { AuthValidation } from '@presentation/protocols/validations/auth.validation.js'
-import { ErrorInitiateAuthPageRenderer } from '@presentation/renderers/error-initiate-auth-page.renderer.js'
-import { LoginPageRenderer } from '@presentation/renderers/login-page.renderer.js'
+import { ErrorInitiateAuthPageRenderer } from '@presentation/protocols/renderers/error-initiate-auth-page.renderer.js'
+import { LoginPageRenderer } from '@presentation/protocols/renderers/login-page.renderer.js'
 import { TYPES } from '@symboles/types.js'
 import { inject, injectable } from 'inversify'
 import 'reflect-metadata'
@@ -36,7 +36,6 @@ export class InitiateAuthRequestController {
       }
 
       const result = await this.verifyAuthClientRequest.verify({ id: request.query.clientId, ...request.query })
-
       if (result.valid) {
         return page(this.loginRenderer.render(result))
       }

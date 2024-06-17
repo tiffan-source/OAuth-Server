@@ -16,5 +16,8 @@ export const TYPES = {
   LoginPageRenderer: Symbol.for('LoginPageRenderer'),
   ErrorInitiateAuthPageRenderer: Symbol.for('ErrorInitiateAuthPageRenderer'),
   UserRegisterValidation: Symbol.for('UserRegisterValidation'),
-  AuthValidation: Symbol.for('AuthValidation')
+  AuthValidation: Symbol.for('AuthValidation'),
+  InitiateAuthRequestController: Symbol.for('InitiateAuthRequestController'),
+  InitiateAuthVineValidation: Symbol.for('InitiateAuthVineValidation'),
+  GetClientByClientIdRepository: Symbol.for('GetClientByClientIdRepository')
 }
