@@ -1,9 +1,8 @@
 import { type ValidationError } from '@presentation/protocols/validations/validation-error'
-import { type IValidation } from '@presentation/protocols/validations/validation.js'
 import { injectable } from 'inversify'
 
 @injectable()
-export class Validation implements IValidation {
+export class Validation {
   protected validationErrors: ValidationError[] = []
 
   async validate (input: any): Promise<void> {};

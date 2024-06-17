@@ -4,9 +4,10 @@ import { ValidationError } from '@presentation/protocols/validations/validation-
 import vine, { errors } from '@vinejs/vine'
 import { injectable } from 'inversify'
 import 'reflect-metadata'
+import { type UserRegisterValidation } from '@presentation/protocols/validations/user-registration.validation.js'
 
 @injectable()
-export class CreateUserVineValidation extends Validation {
+export class CreateUserVineValidation extends Validation implements UserRegisterValidation {
   async validate (user: HttpUserRegister): Promise<void> {
     this.validationErrors = []
     try {

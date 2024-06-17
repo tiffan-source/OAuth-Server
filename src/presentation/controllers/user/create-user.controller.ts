@@ -6,28 +6,28 @@ import { badRequest, created, serverError } from '@presentation/helpers/http.hel
 import { type HttpUserRegister } from '@presentation/protocols/controllers/request/user/httpUserRegister.js'
 import { injectable, inject } from 'inversify'
 import { TYPES } from '@symboles/types.js'
-import { IValidation } from '@presentation/protocols/validations/validation.js'
 import { UserAlreadyExistError } from '@application/user/errors/user-already-exist.error.js'
+import { UserRegisterValidation } from '@presentation/protocols/validations/user-registration.validation'
 
 @injectable()
 export class CreateUserController implements Controller {
   private readonly registerUser: RegisterUser
-  private readonly validation: IValidation
+  private readonly userRegisterValidation: UserRegisterValidation
 
   constructor (
   @inject(TYPES.RegisterUser) registerUser: RegisterUser,
-    @inject(TYPES.Validation) validation: IValidation
+    @inject(TYPES.UserRegisterValidation) userRegisterValidation: UserRegisterValidation
   ) {
     this.registerUser = registerUser
-    this.validation = validation
+    this.userRegisterValidation = userRegisterValidation
   }
 
   async handle (request: HttpUserRegister): Promise<HttpResponse> {
     try {
-      await this.validation.validate(request)
+      await this.userRegisterValidation.validate(request)
 
-      if (!this.validation.isValid()) {
-        const error = new Error(this.validation.getErrors()[0].toString())
+      if (!this.userRegisterValidation.isValid()) {
+        const error = new Error(this.userRegisterValidation.getErrors()[0].toString())
         return badRequest(error)
       }
 

@@ -11,5 +11,10 @@ export const TYPES = {
   PrismaDatabaseConnection: Symbol.for('PrismaDatabaseConnection'),
   CreateUserPrisma: Symbol.for('CreateUserPrisma'),
   HashRepository: Symbol.for('HashRepository'),
-  CheckUserWithEmailRepository: Symbol.for('CheckUserWithEmailRepository')
+  CheckUserWithEmailRepository: Symbol.for('CheckUserWithEmailRepository'),
+  VerifyAuthClientRequest: Symbol.for('VerifyAuthClientRequest'),
+  LoginPageRenderer: Symbol.for('LoginPageRenderer'),
+  ErrorInitiateAuthPageRenderer: Symbol.for('ErrorInitiateAuthPageRenderer'),
+  UserRegisterValidation: Symbol.for('UserRegisterValidation'),
+  AuthValidation: Symbol.for('AuthValidation')
 }
